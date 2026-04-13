@@ -5,7 +5,7 @@ This repository contains the migration of the Assignment 1 microservices from RE
 ## Repositories
 
 - Proto repository: `https://github.com/capydoshik/ap2-proto-repository`
-- Generated code repository: `https://github.com/<your-user>/ap2-generated-contracts`
+- Generated code repository: `https://github.com/capydoshik/ap2-generated-contracts`
 
 The local folders that mirror this flow are:
 
