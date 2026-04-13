@@ -2,16 +2,6 @@
 
 This repository contains the migration of the Assignment 1 microservices from REST-based internal communication to gRPC.
 
-## Repositories
-
-- Proto repository: `https://github.com/capydoshik/ap2-proto-repository`
-- Generated code repository: `https://github.com/capydoshik/ap2-generated-contracts`
-
-The local folders that mirror this flow are:
-
-- `proto-repository` for `.proto` contracts
-- `generated-contracts` for generated `.pb.go` files and the GitHub Actions workflow template
-
 ## What Changed
 
 - `order-service` still exposes REST endpoints for external clients via Gin.
@@ -103,9 +93,3 @@ curl -X PATCH http://localhost:8080/orders/<order-id>/status `
 5. Run the workflow in the generated repository.
 6. Create a tag such as `v1.0.0` in the generated repository.
 7. Replace the local `replace` directives with the real GitHub module import when publishing.
-
-## Architecture and Evidence
-
-- Architecture diagram: [docs/architecture.md](./docs/architecture.md)
-- Evidence checklist: [docs/evidences.md](./docs/evidences.md)
-- Assignment checklist: [docs/assignment-checklist.md](./docs/assignment-checklist.md)
