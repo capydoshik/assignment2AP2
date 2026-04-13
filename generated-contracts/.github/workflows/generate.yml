@@ -1,0 +1,52 @@
+name: Generate Protobuf Code
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout generated repository
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.25.5"
+
+      - name: Setup Buf
+        uses: bufbuild/buf-setup-action@v1
+        with:
+          version: "1.58.0"
+
+      - name: Install Go protobuf plugins
+        run: |
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.10
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.5.1
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      - name: Clone proto files repository
+        run: git clone https://github.com/<your-user>/ap2-proto-repository.git proto-repository
+
+      - name: Generate Go code from proto files
+        run: |
+          rm -rf order payment
+          buf generate proto-repository --template buf.gen.github.yaml
+          rm -rf proto-repository
+
+      - name: Commit and push generated code
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          git config user.name "<your-name>"
+          git config user.email "<your-email>"
+          git add .
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: regenerate protobuf stubs"
+          git remote set-url origin https://x-access-token:${PAT_TOKEN}@github.com/<your-user>/ap2-generated-contracts.git
+          git push origin main
